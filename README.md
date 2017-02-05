@@ -1,5 +1,5 @@
 # Web API RESTful CRUD
-An simple memo app for portofolio purposes. You can create, read, update and delete memo. Created with NodeJS.
+A simple memo app  created with NodeJS (for portofolio purposes). You can create, read, update and delete memo.
 
 ---
 ## Frameworks & Libraries
