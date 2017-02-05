@@ -9,6 +9,10 @@ router.get('/', controller.getAllMemo)
 
 router.post('/new', controller.postMemo)
 
+router.delete('/:id', controller.deleteMemo)
+
+router.put('/:id', controller.updateMemo)
+
 
 
 module.exports = router;
