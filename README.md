@@ -1,21 +1,21 @@
 # Web API RESTful CRUD
-An simple memo app created with NodeJS. You can create, read, update and delete memo.
+A simple memo app  created with NodeJS (for portofolio purposes). You can create, read, update and delete memo.
 
 ---
-### Frameworks & Libraries
+## Frameworks & Libraries
 * [ExpressJS](https://expressjs.com/)
 * [Mongodb](https://www.mongodb.com/)
 * [Mongoose](http://mongoosejs.com/)
 
 ---
-### Guide
+## Guide
 ```
 npm install
 npm start
 
 ```
 ---
-### Routes
+## Routes
 
 | Route	           | HTTP      | Description     |
 | ---------------- |:----------| :---------------|
