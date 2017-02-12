@@ -5,7 +5,7 @@ module.exports = {
   // GET all memo
   getAllMemo : function (req, res) {
     memo.find( {}, {__v : false}, (err, data) =>{
-      res.json(data)
+      res.send(data)
     })
   },
 

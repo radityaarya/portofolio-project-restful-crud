@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
+    <title>Memo</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="rov">
+        <div class="col s12 l10">
+          <table class="highlight centered">
+            <thead>
+              <tr>
+                <th>MEMO</th>
+                <th>UPDATE</th>
+                <th>DELETE</th>
+              </tr>
+            </thead>
+            <tbody id="memo">
+            </tbody>
+          </table>
+          <br />
+          <a class="waves-effect blue btn modal-trigger" data-target="modal1">ADD</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Structure -->
+
+    <!-- Modal Create New Memo -->
+
+    <div id="modal1" class="modal modal-fixed-footer layout">
+      <div class="modal-content">
+        <h4><b>Create New Memo</b></h4>
+        <div class="row">
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s12">
+                <textarea id="newMemo" class="materialize-textarea"></textarea>
+                <label for="newMemo">Input here</label>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-action modal-close waves-effect waves-light btn" onclick="newMemo()" type="submit" name="button">Done</button>
+      </div>
+    </div>
+
+    <!-- Modal Update Memo -->
+
+      <div id="modal2" class="modal modal-fixed-footer">
+        <div class="modal-content">
+          <h4><b>Update Memo</b></h4>
+          <div class="row">
+            <form class="col s12">
+              <div class="row">
+                <div class="input-field col s12">
+                  <textarea id="textarea1" class="materialize-textarea"></textarea>
+                  <label for="textarea1">Input here</label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="modal-action modal-close waves-effect waves-light btn">Done</a>
+        </div>
+      </div>
+
+      <!-- Modal Delete Memo -->
+      <div id="modal3" class="modal">
+        <div class="modal-content">
+          <h4><b>Are you sure you want to permanently delete memo number # ?</b></h4>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-action modal-close waves-effect red btn">DELETE</a>
+            <a href="#" class="modal-action modal-close waves-effect blue btn">CANCEL</a>
+      </div>
+
+    <!-- Compiled and minified JavaScript -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> -->
+    <script>
+    $(document).ready(function() {
+      $.ajax({
+        url  : "http://localhost:3000/api/memo",
+        method : "GET",
+        success: function(data) {
+          console.log(data);
+          var arrTemp = ""
+          for (var i = 0; i < data.length; i++){
+            arrTemp += `<tr>
+                <td>${data[i].memo}</td>
+                <td>
+                  <button class="waves-effect blue btn modal-trigger" onclick="modal2"><i class="material-icons">autorenew</i></button>
+                </td>
+                <td>
+                  <a class="waves-effect red btn modal-trigger" data-target="modal3"><i class="material-icons">clear</i></a>
+                </td>
+              </tr>
+              `
+          }
+          $('#memo').append(arrTemp)
+        }
+      })
+    })
+
+      $(document).ready(function() {
+        // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+        $('.modal-trigger').leanModal();
+      })
+
+    function newMemo(){
+      $(document).ready(function(){
+        $.ajax({
+          url  : "http://localhost:3000/api/memo/new",
+          type : "POST",
+          data: {
+            memo: $('#newMemo').val()
+          },
+          success: function(data) {
+            $('#memo').append(`<tr>
+                <td>${data.memo}</td>
+                <td>
+                  <button class="waves-effect blue btn modal-trigger" data-target="modal2"><i class="material-icons">autorenew</i></button>
+                </td>
+                <td>
+                  <a class="waves-effect red btn modal-trigger" data-target="modal3"><i class="material-icons">clear</i></a>
+                </td>
+              </tr>`
+            )
+          }
+        })
+      })
+    }
+    </script>
+  </body>
+</html>
