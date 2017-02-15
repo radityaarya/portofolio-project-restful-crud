@@ -3,11 +3,8 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
-    <!-- font -->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- Latest compiled and minified JavaScript -->
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
     <title>Memo</title>
@@ -35,8 +32,6 @@
       </div>
     </div>
 
-    <!-- Modal Structure -->
-
     <!-- Modal Create New Memo -->
 
     <div id="modal1" class="modal modal-fixed-footer layout">
@@ -59,164 +54,11 @@
     </div>
 
     <!-- Modal Update Memo -->
+    <div id="modalUpdate" class="modal"></div>
 
-      <!-- <div id="modal2" class="modal modal-fixed-footer">
-        <div class="modal-content">
-          <h4><b>Update Memo</b></h4>
-          <div class="row">
-            <form class="col s12">
-              <div class="row">
-                <div class="input-field col s12">
-                  <textarea id="textarea1" class="materialize-textarea"></textarea>
-                  <label for="textarea1">Input here</label>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <a href="#" class="modal-action modal-close waves-effect waves-light btn">Done</a>
-        </div>
-      </div> -->
+    <!-- Modal Delete Memo -->
+    <div id="modalDelete" class="modal"></div>
 
-      <!-- Modal Delete Memo -->
-      <!-- <div id="modal3" class="modal">
-        <div class="modal-content"
-          <h4><b>Are you sure you want to permanently delete memo number # ?</b></h4>
-        </div>
-        <div class="modal-footer">
-          <a href="#" class="modal-action modal-close waves-effect red btn">DELETE</a>
-          <a href="#" class="modal-action modal-close waves-effect blue btn">CANCEL</a>
-        </div>
-      </div>   -->
-
-      <div id="modalUpdate" class="modal">
-
-      </div>
-
-      <div id="modalDelete" class="modal">
-
-      </div>
-
-    <script>
-    $(document).ready(function() {
-
-      $('.modal').modal();
-
-        $.ajax({
-          url  : "http://localhost:3000/api/memo",
-          method : "GET",
-          success: function(data) {
-            var arrTemp = ""
-            for (var i = 0; i < data.length; i++){
-              arrTemp += `
-              <tr id="memo-${i}">
-                  <td>${data[i].memo}</td>
-                  <td>
-                    <a id="update-memo-${i}" class="waves-effect blue btn modal-trigger" onclick="preUpdate('memo-${i}', '${data[i]._id}')" href="#modalUpdate"><i class="material-icons">autorenew</i></a>
-                  </td>
-                  <td>
-                    <a id="delete-memo-${i}" onclick="preDelete('memo-${i}', '${data[i]._id}')" href="#modalDelete" class="waves-effect red btn modal-trigger"><i class="material-icons">clear</i></a>
-                  </td>
-                </tr>
-                `
-              }
-            $('#memo').append(arrTemp)
-          }
-        })
-
-    })
-
-    function newMemo(){
-      $(document).ready(function(){
-        $.ajax({
-          url  : "http://localhost:3000/api/memo/new",
-          type : "POST",
-          data: {
-            memo: $('#newMemo').val()
-          },
-          success: function(data) {
-            location.reload();
-          }
-        })
-      })
-    }
-
-    function formReset() {
-      $('#form-delete').remove()
-    }
-
-    function preUpdate (index, id) {
-      formReset()
-
-      let memo = $(`#${index} td`)[0].innerHTML
-
-      let updateMemo = `
-        <div id="form-delete">
-          <div class="modal-content">
-          <h4><b>Update Memo</b></h4>
-            <div class="row">
-              <form class="col s12">
-                <div class="row">
-                  <div class="input-field col s12">
-                    <textarea id="updateMemo" class="materialize-textarea">${memo}</textarea>
-                    <label for="newMemo"></label>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-light btn" onclick="update('${index}', '${id}')" type="submit" name="button">Done</a>
-          </div>
-        </div>
-      `
-      $('#modalUpdate').append(updateMemo)
-    }
-
-    function update(index, id) {
-      $(document).ready(function(){
-        $.ajax({
-          url  : `http://localhost:3000/api/memo/${id}`,
-          type : "PUT",
-          data: {
-            memo   : $('#updateMemo').val()
-          },
-          success: function(result) {
-            $(`#${index} td`)[0].innerHTML = result.memo
-          }
-        })
-      })
-    }
-
-    function preDelete(index, id) {
-      formReset()
-
-      let deleteMemo = `
-      <div id="form-delete">
-        <div class="modal-content">
-            <h4><b>Are you sure you want to permanently delete this memo ?</b></h4>
-        </div>
-        <div class="modal-footer">
-            <a onclick="deleteMemo('${index}', '${id}')" class="modal-action modal-close waves-effect red btn">DELETE</a>
-            <a class="modal-action modal-close waves-effect blue btn">CANCEL</a>
-        </div>
-      </div>`
-      $('#modalDelete').append(deleteMemo)
-    }
-
-    function deleteMemo(index, id) {
-      $(document).ready(function() {
-        $.ajax({
-          url  :  `http://localhost:3000/api/memo/${id}`,
-          type : "DELETE",
-          success: function(result) {
-            $(`#${index}`).remove()
-          }
-        })
-      })
-    }
-
-    </script>
+    <script src="jquery.js"></script>
   </body>
 </html>
