@@ -90,6 +90,10 @@
         </div>
       </div>   -->
 
+      <div id="modalUpdate" class="modal">
+
+      </div>
+
       <div id="modalDelete" class="modal">
 
       </div>
@@ -99,22 +103,20 @@
 
       $('.modal').modal();
 
-      getMemo()
-
-      function getMemo(){
         $.ajax({
           url  : "http://localhost:3000/api/memo",
           method : "GET",
           success: function(data) {
             var arrTemp = ""
             for (var i = 0; i < data.length; i++){
-              arrTemp += `<tr id="memo-${i}">
+              arrTemp += `
+              <tr id="memo-${i}">
                   <td>${data[i].memo}</td>
                   <td>
-                    <a id="update-memo-${i}" class="waves-effect blue btn modal-trigger" href="#modal-update"><i class="material-icons">autorenew</i></a>
+                    <a id="update-memo-${i}" class="waves-effect blue btn modal-trigger" onclick="preUpdate('memo-${i}', '${data[i]._id}')" href="#modalUpdate"><i class="material-icons">autorenew</i></a>
                   </td>
                   <td>
-                    <a id="delete-memo-${i}" onclick="preDelete('memo-${i}', '${data[i]._id}')" class="waves-effect red btn modal-trigger" href="#modalDelete"><i class="material-icons">clear</i></a>
+                    <a id="delete-memo-${i}" onclick="preDelete('memo-${i}', '${data[i]._id}')" href="#modalDelete" class="waves-effect red btn modal-trigger"><i class="material-icons">clear</i></a>
                   </td>
                 </tr>
                 `
@@ -122,7 +124,7 @@
             $('#memo').append(arrTemp)
           }
         })
-      }
+
     })
 
     function newMemo(){
@@ -142,6 +144,49 @@
 
     function formReset() {
       $('#form-delete').remove()
+    }
+
+    function preUpdate (index, id) {
+      formReset()
+
+      let memo = $(`#${index} td`)[0].innerHTML
+
+      let updateMemo = `
+        <div id="form-delete">
+          <div class="modal-content">
+          <h4><b>Update Memo</b></h4>
+            <div class="row">
+              <form class="col s12">
+                <div class="row">
+                  <div class="input-field col s12">
+                    <textarea id="updateMemo" class="materialize-textarea">${memo}</textarea>
+                    <label for="newMemo"></label>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a class="modal-action modal-close waves-effect waves-light btn" onclick="update('${index}', '${id}')" type="submit" name="button">Done</a>
+          </div>
+        </div>
+      `
+      $('#modalUpdate').append(updateMemo)
+    }
+
+    function update(index, id) {
+      $(document).ready(function(){
+        $.ajax({
+          url  : `http://localhost:3000/api/memo/${id}`,
+          type : "PUT",
+          data: {
+            memo   : $('#updateMemo').val()
+          },
+          success: function(result) {
+            $(`#${index} td`)[0].innerHTML = result.memo
+          }
+        })
+      })
     }
 
     function preDelete(index, id) {
