@@ -12,6 +12,7 @@ A simple memo app  created with NodeJS (for portofolio purposes). You can create
 ```
 npm install
 npm start
+open index.html 
 
 ```
 ---
