@@ -99,26 +99,30 @@
 
       $('.modal').modal();
 
-      $.ajax({
-        url  : "http://localhost:3000/api/memo",
-        method : "GET",
-        success: function(data) {
-          var arrTemp = ""
-          for (var i = 0; i < data.length; i++){
-            arrTemp += `<tr id="memo-${i}">
-                <td>${data[i].memo}</td>
-                <td>
-                  <a id="update-memo-${i}" class="waves-effect blue btn modal-trigger" href="#modal-update"><i class="material-icons">autorenew</i></a>
-                </td>
-                <td>
-                  <a id="delete-memo-${i}" onclick="preDelete('memo-${i}', '${data[i]._id}')" class="waves-effect red btn modal-trigger" href="#modalDelete"><i class="material-icons">clear</i></a>
-                </td>
-              </tr>
-              `
+      getMemo()
+
+      function getMemo(){
+        $.ajax({
+          url  : "http://localhost:3000/api/memo",
+          method : "GET",
+          success: function(data) {
+            var arrTemp = ""
+            for (var i = 0; i < data.length; i++){
+              arrTemp += `<tr id="memo-${i}">
+                  <td>${data[i].memo}</td>
+                  <td>
+                    <a id="update-memo-${i}" class="waves-effect blue btn modal-trigger" href="#modal-update"><i class="material-icons">autorenew</i></a>
+                  </td>
+                  <td>
+                    <a id="delete-memo-${i}" onclick="preDelete('memo-${i}', '${data[i]._id}')" class="waves-effect red btn modal-trigger" href="#modalDelete"><i class="material-icons">clear</i></a>
+                  </td>
+                </tr>
+                `
+              }
+            $('#memo').append(arrTemp)
           }
-          $('#memo').append(arrTemp)
-        }
-      })
+        })
+      }
     })
 
     function newMemo(){
@@ -130,16 +134,7 @@
             memo: $('#newMemo').val()
           },
           success: function(data) {
-            $('#memo').append(`<tr>
-                <td>${data.memo}</td>
-                <td>
-                  <button class="waves-effect blue btn modal-trigger" data-target="modal2"><i class="material-icons">autorenew</i></button>
-                </td>
-                <td>
-                  <a class="waves-effect red btn modal-trigger" onclick="deleteMemo()"><i class="material-icons">clear</i></a>
-                </td>
-              </tr>`
-            )
+            location.reload();
           }
         })
       })

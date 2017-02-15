@@ -16,7 +16,6 @@ module.exports = {
     })
     .then(function(data) {
       res.send({
-        message: 'New Memo Has Been Added',
         memo   : data.memo
       })
     })
